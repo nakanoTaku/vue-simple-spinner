@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{ message }}</p>
+        <spinner v-show="isLoading"></spinner>
+        <img v-show="!isLoading" :src="image" alt="">
+    </div>
+
+<!--  vue関連読み込み  -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-simple-spinner@1.2.8/dist/vue-simple-spinner.min.js"></script>
+<script>
+    const Spinner = window.VueSimpleSpinner;
+    var app = new Vue({
+        el: "#app",
+        data: {
+            message: 'Vueのローディング画像を検証するよ',
+            image: '',
+            isLoading: true
+        },
+        components: {
+            Spinner
+        },
+        mounted :function(){
+            target = this
+            axios.get('https://dog.ceo/api/breeds/image/random')
+                .then(function(response) {
+                    target.image = response.data.message;
+                    target.isLoading = false
+                })
+                .catch(function(response) {
+                    console.log(response);
+                });
+        }
+    })
+</script>
+<style>
+    #app {
+        margin: 20px;
+        text-align: center;
+    }
+    img {
+        width: 120px;
+        height: 120px;
+    }
+</style>
+</body>
+</html>
